@@ -1,0 +1,7 @@
+numpy
+tqdm
+wget
+transformers
+sentencepiece
+datasets
+huggingface_hub

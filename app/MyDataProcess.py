@@ -6,7 +6,7 @@ from datasets import Dataset
 
 from utils.DataProcess import DataProcess
 
-class SkyDataProcess(DataProcess):
+class MyDataProcess(DataProcess):
     
     @staticmethod
     def _get_processed_files(data_dir: str) -> list:

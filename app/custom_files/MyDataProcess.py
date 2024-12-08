@@ -42,11 +42,13 @@ class MyDataProcess(DataProcess):
                     else:
                         current_tokens = exceed_tokens
 
-        # 最后一行填充到 self.max_length 并加入结果列表
-        if current_tokens:
-            current_tokens += [self.tokenizer.pad_token_id] * (self.max_length - len(current_tokens))
-            npy = self.convert_list_to_numpy(current_tokens)
-            array.append({"input_ids": npy})
+        # 不填充，抛弃最后一行
+        
+        # # 最后一行填充到 self.max_length 并加入结果列表
+        # if current_tokens:
+        #     current_tokens += [self.tokenizer.pad_token_id] * (self.max_length - len(current_tokens))
+        #     npy = self.convert_list_to_numpy(current_tokens)
+        #     array.append({"input_ids": npy})
             
         path = data_path.split(".")[0]
         dataset = Dataset.from_list(array)

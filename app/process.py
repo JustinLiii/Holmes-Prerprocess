@@ -2,7 +2,7 @@ import os
 
 from transformers import LlamaTokenizer
 from datasets import Dataset, concatenate_datasets
-from MyDataProcess import MyDataProcess
+from app.custom_files.MyDataProcess import MyDataProcess
 
 def main(input_dir: str = "/app/data", output_dir: str = "/app/output", num_workers: int = 6):
     # 加载预训练模型的tokenizer

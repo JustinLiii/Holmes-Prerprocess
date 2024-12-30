@@ -1,8 +1,9 @@
 import os
 
+from fire import Fire
 from transformers import LlamaTokenizer
 from datasets import Dataset, concatenate_datasets
-from app.custom_files.MyDataProcess import MyDataProcess
+from custom_files.MyDataProcess import MyDataProcess
 
 def main(input_dir: str = "/app/data", output_dir: str = "/app/output", num_workers: int = 6):
     # 加载预训练模型的tokenizer
@@ -16,3 +17,6 @@ def main(input_dir: str = "/app/data", output_dir: str = "/app/output", num_work
     # # conbine datasets
     dataset_dirs = [os.path.join(input_dir, dataset) for dataset in os.listdir(input_dir) if os.path.isdir(os.path.join(input_dir, dataset))]
     concatenate_datasets([Dataset.load_from_disk(dataset) for dataset in dataset_dirs]).save_to_disk(output_dir)
+
+if __name__ == "__main__":
+    Fire(main)

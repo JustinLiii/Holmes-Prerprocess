@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  script: |
+    docker build -t us-west2-docker.pkg.dev/electric-autumn-443606-e0/holmes-preprocess-repo/holmes-proprocess:0.0.1 .
+  automapSubstitutions: true
+images:
+- 'us-west2-docker.pkg.dev/electric-autumn-443606-e0/holmes-preprocess-repo/holmes-proprocess:0.0.1'

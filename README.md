@@ -6,7 +6,7 @@ Easy utils
 ### 启动
 - run docker
 ```bash
-docker run -it holmes-preprocess:latest -v /path/to/custom/files:/app/custom_files
+docker run -it -v /path/to/custom/files:/app/custom_files holmes-preprocess:latest
 ```
 
 ### 工具

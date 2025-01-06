@@ -21,28 +21,29 @@ class MyDataProcess(DataProcess):
         self.data_files = [os.path.join(data_dir, file) for file in all_files if file.endswith(".parquet") and file.strip(".jsonl") not in processed_files]
         print(f"{len(self.data_files)} files to process. Total {len(self.data_files) + len(processed_files)} files.")
     
-    def process_one_file(self, data_path, context=200):
+    def process_one_file(self, data_path, context=200, batch_size=16):
         # 每一行都是一个json对象，读取里面的text字段
         array = []
         parquet_file = pq.ParquetFile(data_path)
         current_tokens = []
-        batches = parquet_file.iter_batches(batch_size=1)
+        batches = parquet_file.iter_batches(batch_size=batch_size)
         # for every sentence
         for batch in tqdm(batches):
-            sentence = str(bb["text"][0])
-            tokens = self.tokenize_sentense(sentence)
-            current_tokens += tokens
-            if len(current_tokens) > self.max_length:
-                exceed_tokens = current_tokens[self.max_length:]  # 截取超出部分
-                not_exceed_tokens = current_tokens[:self.max_length]  # 截断到 max_length
-                npy = self.convert_list_to_numpy(not_exceed_tokens)
-                array.append({"input_ids": npy})
-                
-                # 判断损失的下文多少
-                if len(exceed_tokens) < context:
-                    current_tokens = []
-                else:
-                    current_tokens = exceed_tokens
+            for sentence in batch["text"]:
+                sentence = str(sentence)
+                tokens = self.tokenize_sentense(sentence)
+                current_tokens += tokens
+                if len(current_tokens) > self.max_length:
+                    exceed_tokens = current_tokens[self.max_length:]  # 截取超出部分
+                    not_exceed_tokens = current_tokens[:self.max_length]  # 截断到 max_length
+                    npy = self.convert_list_to_numpy(not_exceed_tokens)
+                    array.append({"input_ids": npy})
+                    
+                    # 判断损失的下文多少
+                    if len(exceed_tokens) < context:
+                        current_tokens = []
+                    else:
+                        current_tokens = exceed_tokens
 
         # 不填充，抛弃最后一行
         
